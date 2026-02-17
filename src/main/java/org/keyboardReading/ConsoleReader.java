@@ -53,4 +53,43 @@ public class ConsoleReader {
             }
         }
     }
+
+    public static char readChar(String message) {
+        while (true) {
+            System.out.print(message);
+            String input = scanner.nextLine().trim();
+
+            if (input.length() == 1) {
+                return input.charAt(0);
+            }
+            throw new InvalidInputException("You must enter exactly ONE character.");
+        }
+    }
+
+    public static String readString(String message) {
+        while (true) {
+            System.out.print(message);
+            String input = scanner.nextLine().trim();
+            if (!input.isEmpty()) {
+                return input;
+            }
+            throw new InvalidInputException("We expect the input to not be empty.");
+        }
+    }
+
+    public static boolean readYesNo(String message) {
+        while (true) {
+            System.out.print(message);
+            String input = scanner.nextLine().trim().toLowerCase();
+
+            if (input.equals("y")) {
+                return true;
+            }
+            if (input.equals("n")) {
+                return false;
+            }
+            throw new InvalidInputException("Only is allowed 's' or 'n'.");
+        }
+    }
+
 }
