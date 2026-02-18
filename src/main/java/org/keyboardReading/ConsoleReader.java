@@ -66,9 +66,12 @@ public class ConsoleReader {
         while (true) {
             System.out.print(message);
             try {
-                String input = scanner.nextLine().trim();
+                String input = scanner.nextLine().trim().toLowerCase();
                 if (input.length() != 1) {
                     throw new InvalidInputException("You must enter exactly ONE character.");
+                }
+                if (!input.equals("m") && !input.equals("a") && !input.equals("n")) {
+                    throw new InvalidInputException("Only 'm':Morning|'a':Afternoon|'n':Night is allowed.");
                 }
                 return input.charAt(0);
             } catch (InvalidInputException e) {
