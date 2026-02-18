@@ -10,10 +10,12 @@ public class ConsoleReader {
         while (true) {
             System.out.print(message);
             try {
-                return scanner.nextByte();
+                byte value = scanner.nextByte();
+                scanner.nextLine(); // cleans buffer after successful read
+                return value;
             } catch (InputMismatchException e) {
+                scanner.nextLine(); //cleans buffer after error
                 System.out.println("Format error, byte type was expected. Please try again.");
-                scanner.nextLine(); //deletes the line break
             }
         }
     }
@@ -22,10 +24,12 @@ public class ConsoleReader {
         while (true) {
             System.out.print(message);
             try {
-                return scanner.nextInt();
+                int value = scanner.nextInt();
+                scanner.nextLine(); // cleans buffer after successful read
+                return value;
             } catch (InputMismatchException e) {
+                scanner.nextLine(); //cleans buffer after error
                 System.out.println("Format error, int type was expected. Please try again.");
-                scanner.nextLine();
             }
         }
     }
@@ -34,10 +38,12 @@ public class ConsoleReader {
         while (true) {
             System.out.print(message);
             try {
-                return scanner.nextFloat();
+                float value = scanner.nextFloat();
+                scanner.nextLine(); // cleans buffer after successful read
+                return value;
             } catch (InputMismatchException e) {
+                scanner.nextLine(); //cleans buffer after error
                 System.out.println("Format error, float type was expected. Please try again.");
-                scanner.nextLine();
             }
         }
     }
@@ -46,10 +52,12 @@ public class ConsoleReader {
         while (true) {
             System.out.print(message);
             try {
-                return scanner.nextDouble();
+                double value = scanner.nextDouble();
+                scanner.nextLine(); // cleans buffer after successful read
+                return value;
             } catch (InputMismatchException e) {
+                scanner.nextLine(); //cleans buffer after error
                 System.out.println("Format error, double type was expected. Please try again.");
-                scanner.nextLine();
             }
         }
     }
@@ -57,39 +65,50 @@ public class ConsoleReader {
     public static char readChar(String message) {
         while (true) {
             System.out.print(message);
-            String input = scanner.nextLine().trim();
-
-            if (input.length() == 1) {
+            try {
+                String input = scanner.nextLine().trim();
+                if (input.length() != 1) {
+                    throw new InvalidInputException("You must enter exactly ONE character.");
+                }
                 return input.charAt(0);
+            } catch (InvalidInputException e) {
+                System.out.println(e.getMessage() + " Please try again.");
             }
-            throw new InvalidInputException("You must enter exactly ONE character.");
         }
     }
 
     public static String readString(String message) {
         while (true) {
             System.out.print(message);
-            String input = scanner.nextLine().trim();
-            if (!input.isEmpty()) {
+            try {
+                String input = scanner.nextLine().trim();
+                if (input.isEmpty()) {
+                    throw new InvalidInputException("Input cannot be empty.");
+                }
                 return input;
+            } catch (InvalidInputException e) {
+                System.out.println(e.getMessage() + " Please try again.");
             }
-            throw new InvalidInputException("We expect the input to not be empty.");
         }
     }
 
     public static boolean readYesNo(String message) {
         while (true) {
             System.out.print(message);
-            String input = scanner.nextLine().trim().toLowerCase();
-
-            if (input.equals("y")) {
-                return true;
+            try {
+                String input = scanner.nextLine().trim().toLowerCase();
+                if (input.equals("y")) {
+                    return true;
+                }
+                if (input.equals("n")) {
+                    return false;
+                }
+                throw new InvalidInputException("Only 'y'='Yes' or 'n'='No' is allowed.");
+            } catch (InvalidInputException e) {
+                System.out.println(e.getMessage() + " Please try again.");
             }
-            if (input.equals("n")) {
-                return false;
-            }
-            throw new InvalidInputException("Only is allowed 's' or 'n'.");
         }
+
     }
 
 }
